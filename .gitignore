@@ -1,0 +1,15 @@
+pom.xml
+*jar
+/lib/
+/classes/
+/out/
+/out-test/
+/out-server/
+/out-client/
+/target/
+.lein-deps-sum
+.lein-repl-history
+.lein-plugins/
+supper.compiled.test.js
+/node_modules/
+/bower_components/
