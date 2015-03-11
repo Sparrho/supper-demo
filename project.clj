@@ -29,9 +29,10 @@
               :optimizations :advanced}}
 
             {:id "server"
-             :source-paths ["src" "src-server"]
+             :source-paths ["src"]
              :compiler
-             {:target :nodejs
+             {:main "supper.core-server"
+              :target :nodejs
               :output-to "deploy/index.js"
               :output-dir "out-server"
               :preamble ["include.js"]
@@ -40,9 +41,10 @@
               :language-out :ecmascript5}}
 
             {:id "client"
-             :source-paths ["src" "src-client"]
+             :source-paths ["src"]
              :compiler
-             {:output-to "resources/js/supper.compiled.js"
+             {:main "supper.core-client"
+              :output-to "resources/js/supper.compiled.js"
               :output-dir "out-client"
               :optimizations :advanced
               :pretty-print false}}]
