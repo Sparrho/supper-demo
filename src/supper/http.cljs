@@ -1,6 +1,5 @@
 (ns supper.http
-  (:require [cljs.nodejs :as nodejs]
-            [supper.render :as render]
+  (:require [supper.render :as render]
             [supper.http-async :as http-async]))
 
 (defn respond-with-sample

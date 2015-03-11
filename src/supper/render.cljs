@@ -1,14 +1,16 @@
 (ns supper.render
-  (:require-macros [hiccups.core :as hiccups])
-  (:require [cljs.nodejs :as nodejs]
-            [hiccups.runtime :as hiccupsrt]
+  (:require-macros [hiccups.core :as hiccups]
+                   [supper.detector :as d])
+  (:require [hiccups.runtime :as hiccupsrt]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [supper.state :as state]
             [supper.components.container :as container]
             [supper.settings :as settings]))
 
-(def static-url (or (aget nodejs/process "env" "STATIC_URL") settings/static-url))
+(def static-url (d/cs
+                 settings/static-url
+                 (or (aget cljs.nodejs/process "env" "STATIC_URL") settings/static-url)))
 
 (defn render-to-string
   "Takes a state atom and returns the HTML for that state."
