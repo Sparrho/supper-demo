@@ -8,7 +8,7 @@
 
 (def api-host
   (d/cs
-   nil
+   settings/default-api-host
    (or (aget cljs.nodejs/process "env" "API_HOST") settings/default-api-host)))
 
 (enable-console-print!)

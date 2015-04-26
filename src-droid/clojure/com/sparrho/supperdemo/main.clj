@@ -30,6 +30,6 @@
        (doto (.getSettings web-view)
          (.setJavaScriptEnabled true))
        (doto web-view
-         (.loadUrl "http://www.example.com/")
+         (.loadUrl "file:///android_asset/index.html")
          (.setWebViewClient (make-webview-client web-view)))
        ))))

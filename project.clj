@@ -71,6 +71,7 @@
                               [neko/neko "3.2.0"]]
                :target-path "target/debug"
                :android {:aot :all
+                         :assets-paths ["resources"]
                          :rename-manifest-package "com.sparrho.supperdemo.debug"
                          :manifest-options {:app-name "SupperDemo - debug"}}}]
              :release
@@ -83,6 +84,7 @@
                 ;; :keystore-path "/home/user/.android/private.keystore"
                 ;; :key-alias "mykeyalias"
 
+                :assets-paths ["resources"]
                 :ignore-log-priority [:debug :verbose]
                 :aot :all
                 :build-type :release}}]}
