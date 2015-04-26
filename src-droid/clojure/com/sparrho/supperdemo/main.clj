@@ -1,5 +1,6 @@
 (ns com.sparrho.supperdemo.main
   (:require [neko.activity :refer [defactivity set-content-view!]]
+            [neko.debug :refer [*a]]
             [neko.find-view :refer [find-view]]
             [neko.threading :refer [on-ui]])
   (:import [android.webkit WebViewClient]))
@@ -18,15 +19,15 @@
   :key :main
   :on-create
   (fn [this bundle]
-    (neko.debug/keep-screen-on this)
     (on-ui
-     (set-content-view! this
+     (set-content-view! (*a)
                         [:relative-layout {:layout-width :fill-parent
                                            :layout-height :fill-parent}
                          [:web-view {:id ::webview
                                      :layout-width :fill-parent
-                                     :layout-height :fill-parent}]])
-     (let [web-view (find-view this ::webview)]
+                                     :layout-height :fill-parent}]]))
+    (on-ui
+     (let [web-view (find-view (*a) ::main-web-view)]
        (doto (.getSettings web-view)
          (.setJavaScriptEnabled true))
        (doto web-view
