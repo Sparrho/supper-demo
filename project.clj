@@ -2,22 +2,6 @@
   :description "A pure-ClojureScript isomorphic rendering project, using Om/React, Sablono and Node.js"
   :url "https://github.com/Sparrho/supper"
 
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 ;[org.clojure/clojurescript "0.0-3058"] ;TODO: Work out why this breaks dexer
-                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
-                 [org.omcljs/om "0.8.8"]
-                 [sablono "0.3.3"]
-                 ;[hiccups "0.3.0"] ;TODO: Work out why this breaks dexer
-                 [cljs-http "0.1.25"]
-
-                 [prismatic/dommy "1.0.0"] ;NB: Included for testing ONLY. Don't use this inside actual app code!
-                 ]
-
-
-  :plugins [[lein-cljsbuild "1.0.5"]
-            [com.cemerick/clojurescript.test "0.3.3"]
-            [lein-droid "0.4.0-alpha1"]]
-
   :clean-targets ^{:protect false} ;Unprotected to allow deletion of file outside project target dir
   ["out-client" "out-server" "out-test" "deploy/index.js" "resources/js/supper.compiled.js"
    "supper.compiled.test.js" "target"]
@@ -62,21 +46,37 @@
   :source-paths ["src-droid/clojure"]
   :java-source-paths ["src-droid/java"]
   :javac-options ["-target" "1.6" "-source" "1.6" "-Xlint:-options"]
-  :profiles {:default [:dev]
+  :profiles {:cljs-shared
+             {:dependencies [[org.clojure/clojure "1.6.0"]
+                             [org.clojure/clojurescript "0.0-3058"]
+                             [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                             [org.omcljs/om "0.8.8"]
+                             [sablono "0.3.3"]
+                             [hiccups "0.3.0"]
+                             [cljs-http "0.1.25"]
 
-             :dev
-             [:android-common :android-user
+                             [prismatic/dommy "1.0.0"] ;NB: Included for testing ONLY. Don't use this inside actual app code!
+                             ]
+
+              :plugins [[lein-cljsbuild "1.0.5"]
+                        [com.cemerick/clojurescript.test "0.3.3"]]}
+
+             :android-dev
+             [:android-common
               {:dependencies [[org.clojure-android/clojure "1.7.0-alpha6" :use-resources true]
                               [org.clojure-android/tools.nrepl "0.2.6-lollipop"]
                               [neko/neko "3.2.0"]]
+               :plugins [[lein-droid "0.4.0-alpha1"]]
                :target-path "target/debug"
-               :android {:aot :all
+               :android {:aot :all-with-unused
                          :assets-paths ["resources"]
                          :rename-manifest-package "com.sparrho.supperdemo.debug"
                          :manifest-options {:app-name "SupperDemo - debug"}}}]
-             :release
+
+             :android-release
              [:android-common
               {:target-path "target/release"
+               :plugins [[lein-droid "0.4.0-alpha1"]]
                :android
                { ;; Specify the path to your private keystore
                 ;; and the the alias of the key you want to
