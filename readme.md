@@ -1,6 +1,6 @@
 # Supper
 
-A pure-ClojureScript isomorphic rendering project, using Om/React, Sablono and Node.js
+A pure-ClojureScript isomorphic rendering project, using Om/React, Sablono and Node.js. Supper also has experimental support for packaged deployment to Android. 
 
 A public demo version, wrapping the Wikidata search API, lives at: http://supper-demo.herokuapp.com
 
@@ -13,6 +13,14 @@ Can be deployed as-is to Heroku. Local testing requires Node.js to be installed 
 From the root of the project, build with `lein clean`, `lein cljsbuild once client`, `lein cljsbuild once server` and run `npm install` to add the required Node packages.
 
 Once built, run with `node deploy/index.js` and navigate to `http://localhost:3000/`.
+
+To deploy to Android, first build the client side cljs, then run `lein with-profile android-dev droid doall` (with your `:android-common` correctly set in `~/.lein/profiles.clj`). See below for notes on Android usage. 
+
+## Android
+
+With great power comes great responsibility: before compiling an APK, ask yourself whether it will bring the user any value above and beyond the website you've worked so hard on. Push notifications and access to hardware features may be good reasons for shipping a WebView based standalone app (although even then the HTML5 APIs may be more appropriate). 
+
+Clojure's ability to compile to both JS and JVM bytecode provides a unique opportunity for code sharing between web and mobile versions of an application, embedding a WebView with React rendering a unified UI, and using JVM Clojure to pass native functionality through to the React components. There are pros and cons to this approach, with a sliding scale of how much native code is appropriate depending on your needs. There are also situations where users expect a different flow from a standalone app compared to the browser version - better offline usability, for example, and closer integration with other services on the same device. 
 
 ## Server Environment Variables
 
@@ -63,4 +71,4 @@ Shared, [isomorphic](http://www.oreilly.com/pub/e/3009) JS (or, in this case, cl
 
 ## Thanks
 
-Enormous thanks go to the devs behind [Om](https://github.com/omcljs/om), for the ecosystem that makes all of this possible; [Omelette](https://github.com/DomKM/omelette), an isomorphic example built using both Clojurescript and JVM Clojure, for providing heavy inspiration on structure; [matchcolor](https://github.com/seabre/matchcolor) for showing how easily Clojurescript can drive Node.js; and to the authors of all of the libraries without which this project would be impossible.
+Enormous thanks go to the devs behind [Om](https://github.com/omcljs/om), for the ecosystem that makes all of this possible; [Omelette](https://github.com/DomKM/omelette), an isomorphic example built using both Clojurescript and JVM Clojure, for providing heavy inspiration on structure; [matchcolor](https://github.com/seabre/matchcolor) for showing how easily Clojurescript can drive Node.js; [clojure-android](https://github.com/clojure-android) for taking the difficulty out of the web to mobile transition; and to the authors of all of the libraries without which this project would be impossible.
