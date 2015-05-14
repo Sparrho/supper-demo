@@ -27,6 +27,10 @@
                                              ;demo, but production use should have more robust URL handling.
                                              (if-not (util/in? existing-searches new-search)
                                                (do
+                                                 (try
+                                                   (. js/Android (showToast "Searching..."))
+                                                   (catch js/Object e
+                                                     (println "Couldn't use Android interop: " e)))
                                                  (history/set-token!
                                                   (str
                                                    current-url

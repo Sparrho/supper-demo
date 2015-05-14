@@ -49,6 +49,7 @@
                          {:main "supper.core-client"
                           :output-to "resources/js/supper.compiled.js"
                           :output-dir "out-client"
+                          :externs ["externs.js"]
                           :optimizations :advanced
                           :pretty-print false}}]
 
