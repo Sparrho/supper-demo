@@ -2,9 +2,9 @@
 
 (def static-url "/static/")
 
-(def api-base "/w/api.php")
+(def api-base "/api/v2/")
 
-(def default-api-host "http://www.wikidata.org")
+(def default-api-host "http://api.sparrho.com")
 
 (def default-port 3000)
 
@@ -13,8 +13,8 @@
   [{:name :search :array? true}])
 
 (def blank-state
-  {:page {:heading "Supper Demo - Wikidata Search"
+  {:page {:heading "Supper Demo - Sparrho Search"
 
           :uri-params {:search #{}}}
 
-   :wiki-content []})
+   :sparrho-content []})

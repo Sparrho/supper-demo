@@ -15,4 +15,4 @@
 
               (om/build add-search/search-bar (get-in app [:page :uri-params]))
 
-              (om/build-all search-results/search-container (:wiki-content app))]))))
+              (om/build-all search-results/search-container (:sparrho-content app))]))))

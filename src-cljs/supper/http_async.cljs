@@ -12,35 +12,33 @@
 
 (defn- api!
   "Send a request to the API, immediately returning a core.async channel which will contain the response"
-  [{:keys [method params with-credentials? session-id] :or {method :get}}]
+  [{:keys [method params with-credentials? endpoint] :or {method :get}}]
   (let [http-methods {:get http/get
                       :put http/put
                       :post http/post
                       :delete http/delete}
-        url api-base]
-    ((get http-methods method) url {:headers {"X-CSRFToken" (util/get-cookie "csrftoken")
-                                              "Accept" "*/*"
-                                              "sessionid" session-id}
+        url (str api-base endpoint)]
+    ((get http-methods method) url {:headers {"Accept" "*/*"}
                                     :with-credentials? with-credentials?
                                     (if (= method :get)
                                       :query-params
                                       :json-params) params})))
 
-(defn search-wiki!
+(defn search-sparrho!
   [search-term]
-  (api! {:method :get
-         :params {:format "json"
-                  :language "en"
-                  :action "wbsearchentities"
-                  :search search-term}}))
+  (api! {:method :post
+         :endpoint "search/"
+         :with-credentials? false
+         :params {:keywords #{search-term}
+                  :sources []}}))
 
 (defn append-new-search!
   [search-term cursor]
-  (let [result-chan (search-wiki! search-term)]
+  (let [result-chan (search-sparrho! search-term)]
     (go
      (let [result (<! result-chan)]
        (if (= (:status result) 200)
-         (om/transact! (util/content-ref-cursor cursor) #(conj % (:body result))))))))
+         (om/transact! (util/content-ref-cursor cursor) #(into [(assoc (:body result) :kw search-term)] %)))))))
 
 (defn initialise-search-results
   "Initialise the state atom without relying on any Om functionality. This allows the state to be pre-built
@@ -49,14 +47,17 @@
   (let [search-set (get-in @state-atom [:page :uri-params :search])
         result-channels (for
                           [search-term search-set]
-                          (search-wiki! search-term))]
+                          {:result-channel (search-sparrho! search-term)
+                           :search-term search-term})]
     (go
      (doseq
-       [result-chan result-channels]
-       (let [result (<! result-chan)]
+       [result-info result-channels]
+       (let [result (<! (:result-channel result-info))]
          (if (= (:status result) 200)
            (swap! state-atom
                   (fn [av result-body]
-                    (assoc av :wiki-content (conj (:wiki-content av) result-body)))
+                    (assoc av :sparrho-content (conj
+                                                (:sparrho-content av)
+                                                (assoc result-body :kw (:search-term result-info)))))
                   (:body result)))))
      (callback))))

@@ -1,8 +1,8 @@
 # Supper
 
-A pure-ClojureScript isomorphic rendering project, using Om/React, Sablono and Node.js. Supper also has experimental support for packaged deployment to Android. 
+A pure-ClojureScript isomorphic rendering project, using Om/React, Sablono and Node.js. Supper also has experimental support for packaged deployment to Android.
 
-A public demo version, wrapping the Wikidata search API, lives at: http://supper-demo.herokuapp.com
+A public demo version, wrapping the Sparrho basic search API, lives at: http://supper-demo.herokuapp.com
 
 Currently a working model, generalised from an internal project, and still a little rough around the edges. For now, consider it an interactive how-to rather than a finished product. Next steps will be breaking it down into a proper standalone library and a lein template.
 
@@ -14,13 +14,13 @@ From the root of the project, build with `lein clean`, `lein cljsbuild once clie
 
 Once built, run with `node deploy/index.js` and navigate to `http://localhost:3000/`.
 
-To deploy to Android, first build the client side cljs, then run `lein with-profile android-dev droid doall` (with your `:android-common` correctly set in `~/.lein/profiles.clj`). See below for notes on Android usage. 
+To deploy to Android, first build the client side cljs, then run `lein with-profile android-dev droid doall` (with your `:android-common` correctly set in `~/.lein/profiles.clj`). See below for notes on Android usage.
 
 ## Android
 
-With great power comes great responsibility: before compiling an APK, ask yourself whether it will bring the user any value above and beyond the website you've worked so hard on. Push notifications and access to hardware features may be good reasons for shipping a WebView based standalone app (although even then the HTML5 APIs may be more appropriate). 
+With great power comes great responsibility: before compiling an APK, ask yourself whether it will bring the user any value above and beyond the website you've worked so hard on. Push notifications and access to hardware features may be good reasons for shipping a WebView based standalone app (although even then the HTML5 APIs may be more appropriate).
 
-Clojure's ability to compile to both JS and JVM bytecode provides a unique opportunity for code sharing between web and mobile versions of an application, embedding a WebView with React rendering a unified UI, and using JVM Clojure to pass native functionality through to the React components. There are pros and cons to this approach, with a sliding scale of how much native code is appropriate depending on your needs. There are also situations where users expect a different flow from a standalone app compared to the browser version - better offline usability, for example, and closer integration with other services on the same device. 
+Clojure's ability to compile to both JS and JVM bytecode provides a unique opportunity for code sharing between web and mobile versions of an application, embedding a WebView with React rendering a unified UI, and using JVM Clojure to pass native functionality through to the React components. There are pros and cons to this approach, with a sliding scale of how much native code is appropriate depending on your needs. There are also situations where users expect a different flow from a standalone app compared to the browser version - better offline usability, for example, and closer integration with other services on the same device.
 
 ## Server Environment Variables
 

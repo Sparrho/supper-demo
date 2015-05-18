@@ -58,4 +58,4 @@
 
 (defn content-ref-cursor
   [cursor]
-  (generate-ref-cursor cursor [:wiki-content]))
+  (generate-ref-cursor cursor [:sparrho-content]))

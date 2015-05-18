@@ -2,17 +2,21 @@
   (:require [om.core :as om :include-macros true]
             [sablono.core :as html :refer-macros [html]]))
 
+(defn build-item-url
+  [item]
+  (str "http://www.sparrho.com/article/" (get-in item [:type :machine]) "/" (:id item) "/"))
+
 (defn result-row
   [search-result owner]
   (reify
     om/IRender
     (render [_]
             (html
-             [:a.list-group-item {:href (:url search-result) :target "_blank"}
+             [:a.list-group-item {:href (build-item-url search-result) :target "_blank"}
               [:h4.list-group-item-heading
-               (:label search-result) " - " (:id search-result)]
+               (:title search-result)]
               [:p.list-group-item-text
-               (or (:description search-result) "Description not found")]]))))
+               (or (:source search-result) "Source not found")]]))))
 
 (defn search-container
   [search owner]
@@ -22,7 +26,7 @@
             (html
              [:div.panel.panel-default
               [:div.panel-heading
-               [:h2 (str "Results for \"" (get-in search [:searchinfo :search]) "\"")]]
+               [:h2 (str "Results for \"" (:kw search) "\"")]]
               [:div.panel-body
                [:div.list-group
-                (om/build-all result-row (:search search))]]]))))
+                (om/build-all result-row (:content search))]]]))))
