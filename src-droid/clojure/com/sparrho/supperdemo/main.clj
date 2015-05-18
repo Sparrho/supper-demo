@@ -2,19 +2,9 @@
   (:require [neko.activity :refer [defactivity set-content-view!]]
             [neko.find-view :refer [find-view]]
             [neko.threading :refer [on-ui]]
-            [com.sparrho.supperdemo.jsinterface])
-  (:import [android.webkit WebViewClient]))
+            [com.sparrho.supperdemo.jsinterface]))
 
-;Based on https://github.com/sattvik/Clojure-Android-Examples/
-(defn make-webview-client
-  "Constructs an instance of WebViewClient that allows us to manage the
-  WebView."
-  [web-view]
-  (proxy [WebViewClient] []
-    (shouldOverrideUrlLoading [view url]
-                              (.loadUrl view url)
-                              true)))
-
+;TODO: Type hinting!
 (defactivity com.sparrho.supperdemo.InitActivity
   :key :main
   :on-create
@@ -32,6 +22,5 @@
          (.setJavaScriptEnabled true))
        (doto web-view
          (.addJavascriptInterface (com.sparrho.supperdemo.jsinterface.interop. this) "Android")
-         (.loadUrl "file:///android_asset/index.html")
-         (.setWebViewClient (make-webview-client web-view)))
+         (.loadUrl "file:///android_asset/index.html"))
        ))))
