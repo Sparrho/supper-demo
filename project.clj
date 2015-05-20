@@ -68,7 +68,7 @@
 
                :dependencies [[org.clojure-android/clojure "1.7.0-alpha6" :use-resources true]
                               [neko/neko "3.2.0"]]
-               :plugins [[lein-droid "0.4.0-alpha1"]]
+               :plugins [[lein-droid "0.4.0-alpha2"]]
                :android {;; Specify the path to the Android SDK directory.
                          ;; :sdk-path "/home/user/path/to/android-sdk/"
 
@@ -82,10 +82,7 @@
 
                          :assets-paths ["resources"]
                          :target-version "22"
-                         :aot-exclude-ns ["clojure.parallel" "clojure.core.reducers"
-                                          "cljs-tooling.complete" "cljs-tooling.info"
-                                          "cljs-tooling.util.analysis" "cljs-tooling.util.misc"
-                                          "cider.nrepl" "cider-nrepl.plugin"]}}]
+                         :aot-exclude-ns ["clojure.parallel" "clojure.core.reducers"]}}]
 
              :android-dev
              [:android-shared
@@ -94,6 +91,25 @@
                :android {:aot :all-with-unused
                          :rename-manifest-package "com.sparrho.supperdemo.debug"
                          :manifest-options {:app-name "SupperDemo - debug"}}}]
+
+             :android-dev-lean
+             [:android-dev
+              {:dependencies ^:replace [[org.skummet/clojure "1.7.0-beta3-r1" :use-resources true]
+                                        [neko/neko "3.2.0"]]
+               :exclusions [[org.clojure/clojure]
+                            [org.clojure-android/clojure]]
+               :global-vars ^:replace {clojure.core/*warn-on-reflection* true}
+               :jvm-opts ["-Dclojure.compile.ignore-lean-classes=true"]
+               :android {:aot :all
+                         :lean-compile true
+                         :skummet-skip-vars ["#'neko.init/init"
+                                             "#'neko.context/context"
+                                             "#'neko.resource/package-name"
+                                             "#'neko.-utils/keyword->static-field"
+                                             "#'neko.-utils/keyword->setter"
+                                             "#'neko.ui.traits/get-display-metrics"
+                                             "#'com.sparrho.supperdemo.main/InitActivity-onCreate"
+                                             "#'com.sparrho.supperdemo.main/InitActivity-init"]}}]
 
              :android-release
              [:android-shared
