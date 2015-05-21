@@ -101,6 +101,8 @@
                :global-vars ^:replace {clojure.core/*warn-on-reflection* true}
                :jvm-opts ["-Dclojure.compile.ignore-lean-classes=true"]
                :android {:aot :all
+                         :proguard-execute true
+                         :proguard-conf-path "proguard.conf"
                          :lean-compile true
                          :skummet-skip-vars ["#'neko.init/init"
                                              "#'neko.context/context"
